@@ -1,0 +1,25 @@
+# Uncomment one of the next two lines to make the aliases use podman or docker.
+CONTAINER_PROG=docker
+# CONTAINER_PROG=podman
+
+function cdo
+{
+    if [[ "podman" = "$CONTAINER_PROG" ]]; then
+        podman "$@"
+    else
+        sudo docker "$@"
+    fi
+}
+
+function crun
+{
+    cdo run -it \
+               --rm \
+               -e DISPLAY=${DISPLAY} \
+               -v $XAUTHORITY:/root/.Xauthority \
+               -v /tmp/.X11-unix:/tmp/.X11-unix \
+               -v `pwd`:/src/files \
+               -w /src/files  \
+               "$@"
+}
+
