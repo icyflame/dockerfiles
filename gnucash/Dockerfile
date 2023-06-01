@@ -8,7 +8,7 @@
 #
 # Mount $(pwd) as a volume using: -v $(pwd):/src/files
 
-FROM ubuntu:bionic
+FROM ubuntu:23.04
 LABEL maintainer "Siddharth Kannan <mail@siddharthkannan.in>"
 
 RUN apt-get update -q && apt-get install -y -q \
@@ -36,14 +36,17 @@ RUN apt-get update -q && apt-get install -y -q \
 		libboost-regex-dev \
 		libboost-program-options-dev \
 		libboost-system-dev \
-		&& mkdir /src \
+		libwebkit2gtk-4.1-dev \
+		gettext \
+		git
+
+RUN mkdir /src \
 		&& cd /src \
-		&& wget -q "https://sourceforge.net/projects/gnucash/files/gnucash%20(stable)/4.1/gnucash-4.1.tar.bz2" \
-		&& bzip2 -d gnucash-4.1.tar.bz2 \
-		&& tar xf gnucash-4.1.tar \
-		&& mkdir build \
-		&& cd build \
-		&& cmake -DWITH_AQBANKING=false -DWITH_SQL=false ../gnucash-4.1 \
+		&& git clone --depth 1 --branch=5.1 https://github.com/Gnucash/gnucash.git /src/gnucash-code
+
+RUN mkdir /src/build \
+		&& cd /src/build \
+		&& cmake -DWITH_AQBANKING=false -DWITH_SQL=false ../gnucash-code \
 		&& make --silent
 
 ENTRYPOINT ["/src/build/bin/gnucash"]
