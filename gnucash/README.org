@@ -1,0 +1,5 @@
+#+TITLE: GnuCash Docker Image
+
+This image and the associated Dockerfile are not actively maintained anymore. A more recent image
+can be found [[https://github.com/dc25/gnucash-container-build][here.]] This image builds GnuCash 5.1 on Ubuntu 23.04 and I have confirmed that it works
+well.
